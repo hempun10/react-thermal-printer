@@ -24,20 +24,30 @@ type Props = ExtendHTMLProps<
   }
 >;
 
-export const Row: Printable<Props> = ({ left, center, right, gap, className, ...props }) => {
+export const Row: Printable<Props> = ({ left, center, right, gap = 0, ...props }) => {
   const leftEl = typeof left === 'string' ? <Text>{left}</Text> : left;
   const centerEl = typeof center === 'string' ? <Text>{center}</Text> : center;
   const rightEl = typeof right === 'string' ? <Text>{right}</Text> : right;
 
   return (
-    <div data-gap={gap} className={classNames('rtp-row', className)} {...props}>
-      {cloneElement(leftEl, { className: classNames('rtp-row-left', leftEl.props.className) })}
-      {centerEl !== undefined
-        ? cloneElement(centerEl, {
-            className: classNames('rtp-row-center', centerEl.props.className),
-          })
-        : null}
-      {cloneElement(rightEl, { className: classNames('rtp-row-right', rightEl.props.className) })}
+    <div
+      data-gap={gap}
+      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+      {...props}
+    >
+      <div style={{ flex: 1 }}>
+        {cloneElement(leftEl, { className: classNames('rtp-row-left', leftEl.props.className) })}
+      </div>
+      <div style={{ flex: 1, textAlign: 'center' }}>
+        {centerEl !== undefined
+          ? cloneElement(centerEl, {
+              className: classNames('rtp-row-center', centerEl.props.className),
+            })
+          : null}
+      </div>
+      <div style={{ flex: 1, textAlign: 'right' }}>
+        {cloneElement(rightEl, { className: classNames('rtp-row-right', rightEl.props.className) })}
+      </div>
     </div>
   );
 };
